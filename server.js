@@ -6,7 +6,7 @@ app.set('view engine' , 'pug')
 
 const bodyParser = require('body-parser')
 
-const adminData = require('./routes/admin')
+const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
 app.use(bodyParser.urlencoded({
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(path.join(__dirname,'public')))
 app.use(shopRoutes)
-app.use('/admin',adminData.routes)
+app.use('/admin',adminRoutes)
 
 app.use((req,res) => {
     res.status(404).render('404')
