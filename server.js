@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express();
 const path = require('path')
+const mongoose = require('mongoose')
 
 app.set('view engine' , 'pug')
 
@@ -21,4 +22,12 @@ app.use('/admin',adminRoutes)
 
 app.use(errorController.get404)
 
-app.listen(3000)
+mongoose.connect(
+    'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/<dbname>?retryWrites=true&w=majority'
+)
+.then( result => {
+    app.listen(3000)
+})
+.catch( err=> {
+    console.log(err)
+})
