@@ -3,6 +3,7 @@ const app = express();
 const path = require('path')
 
 app.set('view engine' , 'pug')
+
 const bodyParser = require('body-parser')
 
 const adminData = require('./routes/admin')
@@ -17,7 +18,7 @@ app.use(shopRoutes)
 app.use('/admin',adminData.routes)
 
 app.use((req,res) => {
-    res.status(404).sendFile(path.join(__dirname,'views','404.html'))
+    res.status(404).render('404')
 })
 
 app.listen(3030)
