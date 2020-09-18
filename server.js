@@ -29,6 +29,6 @@ mongoose.connect(
 .then( result => {
     app.listen(3000)
 })
-.catch( err=> {
+.catch( err => {
     console.log(err)
 })
