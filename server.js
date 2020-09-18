@@ -24,7 +24,7 @@ app.use('/admin',adminRoutes)
 app.use(errorController.get404)
 
 mongoose.connect(
-    'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/<dbname>?retryWrites=true&w=majority'
+    'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/aashim?retryWrites=true&w=majority'
 )
 .then( result => {
     app.listen(3000)
