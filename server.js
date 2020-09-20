@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const path = require('path')
 const mongoose = require('mongoose')
+const User = require('./models/user');
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -18,6 +19,16 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(express.static(path.join(__dirname,'public')))
+
+app.use((req, res, next) => {
+    User.findById('5bab316ce0a7c75f783cb8a8')
+      .then(user => {
+        req.user = user;
+        next();
+      })
+      .catch(err => console.log(err));
+  });
+
 app.use(shopRoutes)
 app.use('/admin',adminRoutes)
 
@@ -27,6 +38,18 @@ mongoose.connect(
     'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/aashim?retryWrites=true&w=majority'
 )
 .then( result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: 'Aashim',
+          email: 'aashim@email.com',
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+    });
     app.listen(3000)
 })
 .catch( err => {
