@@ -2,6 +2,8 @@ const express = require('express')
 const app = express();
 const path = require('path')
 const mongoose = require('mongoose')
+const session = require('express-session');
+
 const User = require('./models/user');
 
 app.set('view engine', 'ejs');
@@ -18,6 +20,10 @@ const errorController = require('./controllers/error')
 app.use(bodyParser.urlencoded({
     extended:false
 }));
+
+app.use(
+  session({ secret: 'my secret', resave: false, saveUninitialized: false })
+);
 
 app.use(express.static(path.join(__dirname,'public')))
 
