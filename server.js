@@ -37,13 +37,16 @@ app.use(
 app.use(express.static(path.join(__dirname,'public')))
 
 app.use((req, res, next) => {
-    User.findById('5f68f864ff342c4b2094d8f5')
-      .then(user => {
-        req.user = user;
-        next();
-      })
-      .catch(err => console.log(err));
-  });
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
+});
 
 app.use('/admin',adminRoutes)
 app.use(shopRoutes)
@@ -52,23 +55,24 @@ app.use(authRoutes);
 app.use(errorController.get404)
 
 mongoose.connect(
-    'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/aashim?retryWrites=true&w=majority'
+  MONGODB_URI
 )
-.then( result => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          name: 'Aashim',
-          email: 'aashim@email.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
-    app.listen(3000)
+.then(result => {
+  User.findOne().then(user => {
+    if (!user) {
+      const user = new User({
+        name: 'Max',
+        email: 'max@test.com',
+        cart: {
+          items: []
+        }
+      });
+      user.save();
+    }
+  });
+  app.listen(3000);
 })
-.catch( err => {
-    console.log(err)
-})
+.catch(err => {
+  console.log(err);
+});
+
