@@ -3,9 +3,18 @@ const app = express();
 const path = require('path')
 const mongoose = require('mongoose')
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const User = require('./models/user');
 
+const MONGODB_URI =
+  'mongodb+srv://aashimgarg:aashimgarg@shop-app.7uqv5.mongodb.net/aashim';
+
+  const store = new MongoDBStore({
+    uri: MONGODB_URI,
+    collection: 'sessions'
+  });
+  
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -22,7 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(
-  session({ secret: 'my secret', resave: false, saveUninitialized: false })
+  session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store })
 );
 
 app.use(express.static(path.join(__dirname,'public')))
